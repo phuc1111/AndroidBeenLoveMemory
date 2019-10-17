@@ -1,5 +1,7 @@
 package com.example.androidbeenlovememory;
 
+import android.widget.DatePicker;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -12,5 +14,5 @@ public class User {
     public int uid;
     public String name1;
     public String name2;
-    public int date;
+    public Long date;
 }
