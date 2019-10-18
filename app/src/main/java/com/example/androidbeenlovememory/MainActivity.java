@@ -7,7 +7,10 @@ import androidx.room.Room;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import android.content.Intent;
+import android.net.ParseException;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -74,4 +78,51 @@ public class MainActivity extends AppCompatActivity {
         final List <User> users = db.userDao().getAll();
         return users.size();
     }
+    private  void setTime(){
+        long diff = 0;
+
+        String toyBornTime = "2014-06-18 12:56:50";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss");
+
+        try {
+
+            Date oldDate = dateFormat.parse(toyBornTime);
+            System.out.println(oldDate);
+
+            Date currentDate = new Date();
+
+            diff = currentDate.getTime() - oldDate.getTime();
+            long seconds = diff / 1000;
+            long minutes = seconds / 60;
+            long hours = minutes / 60;
+            long days = hours / 24;
+
+            if (oldDate.before(currentDate)) {
+
+                Log.e("oldDate", "is previous date");
+                Log.e("Difference: ", " seconds: " + seconds + " minutes: " + minutes
+                        + " hours: " + hours + " days: " + days);
+
+            }
+
+            // Log.e("toyBornTime", "" + toyBornTime);
+
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+//Set time in milliseconds
+        c.setTimeInMillis(999999999); //truyen vao
+        int mYear = c.get(Calendar.YEAR)-1970;
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH)-1;
+        int hr = c.get(Calendar.HOUR);
+        int min = c.get(Calendar.MINUTE);
+        int sec = c.get(Calendar.SECOND);
+    }
+
 }
