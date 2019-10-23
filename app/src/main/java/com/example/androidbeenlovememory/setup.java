@@ -37,6 +37,7 @@ public class setup extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showDatePicker();
+
             }
         });
 
@@ -45,7 +46,7 @@ public class setup extends AppCompatActivity {
             @SuppressLint("StaticFieldLeak")
             @Override
             public void onClick(View view) {
-                setInfor();
+                    setInfor();
             }
         });
     }
@@ -62,24 +63,24 @@ public class setup extends AppCompatActivity {
         name1 = editTextNam1.getText().toString();
         name2 = editTextNam2.getText().toString();
         bt_date = bt_day.getText().toString();
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                User user = new User();
-                user.uid = 8;
-                user.name1 = name1;
-                user.name2 = name2;
-                user.date = bt_date;
-                db.userDao().insertAll(user);
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                moveMainScreen();
-            }
-        }.execute();
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    User user = new User();
+                    user.uid = 8;
+                    user.name1 = name1;
+                    user.name2 = name2;
+                    user.date = bt_date;
+                    db.userDao().insertAll(user);
+                    return null;
+                }
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    moveMainScreen();
+                }
+            }.execute();
     }
 
     private void showDatePicker() {

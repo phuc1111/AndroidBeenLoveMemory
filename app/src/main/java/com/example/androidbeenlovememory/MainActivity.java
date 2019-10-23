@@ -23,6 +23,8 @@ import android.widget.TextView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     AppDatabase db;
@@ -43,7 +45,18 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     Log.i("tag", "abc");
                 } else {
-                    setInfor();
+                    Timer T = new Timer();
+                    T.scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setInfor();
+                                }
+                            });
+                        }
+                    }, 1000, 1000);
                 }
                 return null;
             }
@@ -103,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 int hr = c.get(Calendar.HOUR);
                 int min = c.get(Calendar.MINUTE);
                 int sec = c.get(Calendar.SECOND);
-                Long day = diff/86400000;
+                Long day = diff/86400000 + 2;
 
                 Button bt_year = findViewById(R.id.bt_nam);
                 Button bt_month = findViewById(R.id.bt_thang);
@@ -113,15 +126,51 @@ public class MainActivity extends AppCompatActivity {
                 Button bt_second = findViewById(R.id.bt_giay);
                 TextView tv_day = findViewById(R.id.tv_day);
 
+                if (mYear < 10){
+                    bt_year.setText("0"+mYear);
+                }else {
+                    bt_year.setText(String.valueOf(mYear));
+                }
+                if (mMonth < 10){
+                    bt_month.setText("0"+mMonth);
+                }else {
+                    bt_month.setText(String.valueOf(mMonth));
+                }
+                if (mDay < 10){
+                    bt_day.setText("0"+mDay);
+                }else {
+                    bt_day.setText(String.valueOf(mDay));
+                }
+                if (hr < 10){
+                    bt_hour.setText("0"+hr);
+                }else {
+                    bt_hour.setText(String.valueOf(hr));
+                }
+                if (min < 10){
+                    bt_minute.setText("0"+min);
+                }else {
+                    bt_minute.setText(String.valueOf(min));
+                }
+                if (sec < 10){
+                    bt_second.setText("0"+sec);
+                }else {
+                    bt_second.setText(String.valueOf(sec));
+                }
+                if (day < 10){
+                    tv_day.setText("0"+day);
+                }else {
+                    tv_day.setText(String.valueOf(day));
+                }
+//                bt_month.setText(String.valueOf(mMonth));
+//                bt_day.setText(String.valueOf(mDay));
+//                bt_hour.setText(String.valueOf(hr));
+//                bt_minute.setText(String.valueOf(min));
+//                bt_second.setText(String.valueOf(sec));
+//                tv_day.setText(String.valueOf(day));
 
-                bt_year.setText(String.valueOf(mYear));
-                bt_month.setText(String.valueOf(mMonth));
-                bt_day.setText(String.valueOf(mDay));
-                bt_hour.setText(String.valueOf(hr));
-                bt_minute.setText(String.valueOf(min));
-                bt_second.setText(String.valueOf(sec));
-                tv_day.setText(String.valueOf(day));
-
+            }else {
+                Intent intent = new Intent(MainActivity.this, setup.class);
+                startActivity(intent);
             }
         } catch (ParseException e) {
             e.printStackTrace();
