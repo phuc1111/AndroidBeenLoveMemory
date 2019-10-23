@@ -14,5 +14,5 @@ public class User {
     public int uid;
     public String name1;
     public String name2;
-    public Long date;
+    public String date;
 }

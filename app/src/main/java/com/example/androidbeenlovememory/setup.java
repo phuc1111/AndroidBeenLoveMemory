@@ -17,8 +17,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.util.List;
+
 public class setup extends AppCompatActivity {
     AppDatabase db;
+    Button bt;
+    String name1, name2, bt_date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         db = Room.databaseBuilder(getApplicationContext(),
@@ -26,11 +32,12 @@ public class setup extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
-        Button bt = findViewById(R.id.bt_setDate);
+        bt = findViewById(R.id.bt_setDate);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDatePicker();
+
             }
         });
 
@@ -39,57 +46,56 @@ public class setup extends AppCompatActivity {
             @SuppressLint("StaticFieldLeak")
             @Override
             public void onClick(View view) {
-                setInfor();
-                moveMainScreen();
+                    setInfor();
             }
         });
     }
 
     @SuppressLint("StaticFieldLeak")
-    private  void setInfor(){
+    private void setInfor() {
         db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name").build();
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
 
-                        //@SuppressLint("WrongViewCast") DatePicker datePicker = findViewById(R.id.bt_setDate);
-                        EditText editTextNam1 = findViewById(R.id.edt_name1);
-                        EditText editTextNam2 = findViewById(R.id.edt_name2);
-                        String name1 = editTextNam1.getText().toString();
-                        String name2 = editTextNam2.getText().toString();
-                        //Long date = (DatePicker) findViewById(R.id.bt_setDate).getMaxDate();
+        EditText editTextNam1 = findViewById(R.id.edt_name1);
+        EditText editTextNam2 = findViewById(R.id.edt_name2);
+        Button bt_day = findViewById(R.id.bt_setDate);
 
-                        User user = new User();
-                        user.uid=1;
-                        user.name1=name1;
-                        user.name2=name2;
-                        //user.date= ;
-                        db.userDao().insertAll(user);
-                    }
-                });
-                return null;
+        name1 = editTextNam1.getText().toString();
+        name2 = editTextNam2.getText().toString();
+        bt_date = bt_day.getText().toString();
 
-            }
-        }.execute();
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    User user = new User();
+                    user.uid = 8;
+                    user.name1 = name1;
+                    user.name2 = name2;
+                    user.date = bt_date;
+                    db.userDao().insertAll(user);
+                    return null;
+                }
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    moveMainScreen();
+                }
+            }.execute();
     }
 
-    private void showDatePicker(){
-        DatePickerDialog date = new DatePickerDialog(this , new DatePickerDialog.OnDateSetListener() {
+    private void showDatePicker() {
+        DatePickerDialog date = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                //Log.i("TAG", "" +i + "" +i1 + " "+i2);
-                Button bt = findViewById(R.id.bt_setDate);
-                bt.setText(i+" "+(i1+1)+" "+i2);
+
+                bt = findViewById(R.id.bt_setDate);
+                bt.setText(i + "-" + (i1 + 1) + "-" + i2 + " 00:00:00");
             }
         }, 2019, 01, 01);
         date.show();
     }
 
-    private void moveMainScreen(){
+    private void moveMainScreen() {
         Intent intent = new Intent(setup.this, MainActivity.class);
         startActivity(intent);
     }
